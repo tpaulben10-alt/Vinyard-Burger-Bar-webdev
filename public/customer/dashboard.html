@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Vinyard Burger Bar | Menu</title>
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/customer.css">
+  </head>
+  <body class="page">
+    <header class="topbar">
+      <h1 class="brand">Vinyard</h1>
+      <nav class="nav-actions">
+        <span>Hi, <strong data-user-name></strong></span>
+        <a class="button secondary" href="/customer/order-status.html">Orders</a>
+        <button data-cart-open>Cart <span class="cart-badge" data-cart-count>0</span></button>
+        <button class="ghost" data-logout>Logout</button>
+      </nav>
+    </header>
+
+    <main class="layout">
+      <section class="menu-hero">
+        <div>
+          <span class="eyebrow">Fresh from the bar</span>
+          <h1>Vinyard favorites, ready for the kitchen.</h1>
+        </div>
+        <p>Browse the house menu by category and send your order straight to the POS queue.</p>
+      </section>
+
+      <div class="tabs" data-tabs></div>
+      <section class="grid menu-grid" data-menu-grid></section>
+    </main>
+
+    <aside class="cart-drawer" data-cart-drawer>
+      <div class="cart-head cart-row">
+        <h2 class="section-title">Cart</h2>
+        <button class="secondary" data-cart-close>Close</button>
+      </div>
+      <div class="cart-items" data-cart-items></div>
+      <div class="cart-foot">
+        <label>Order Notes
+          <textarea data-order-notes placeholder="No onions, extra sauce, pickup details..."></textarea>
+        </label>
+        <div class="cart-total">
+          <strong>Total</strong>
+          <strong data-cart-total>₱0.00</strong>
+        </div>
+        <button data-place-order>Place Order</button>
+      </div>
+    </aside>
+
+    <div class="modal-backdrop" data-confirm-modal>
+      <div class="modal">
+        <span class="eyebrow">Order sent</span>
+        <h2 class="section-title" data-modal-order></h2>
+        <p>Your order is in the kitchen queue. Track it live from your orders page.</p>
+        <div class="nav-actions">
+          <a class="button" href="/customer/order-status.html">Track Order</a>
+          <button class="secondary" data-confirm-close>Keep Browsing</button>
+        </div>
+      </div>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/js/auth.js"></script>
+    <script src="/js/socket.js"></script>
+    <script src="/js/customer.js"></script>
+  </body>
+</html>

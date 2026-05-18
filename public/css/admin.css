@@ -1,0 +1,97 @@
+.admin-links,
+.summary-grid {
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+}
+
+.summary-card {
+  padding: 1.25rem;
+}
+
+.summary-card strong {
+  display: block;
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 2.4rem;
+  color: var(--gold-soft);
+}
+
+.admin-link {
+  padding: 1.25rem;
+  min-height: 120px;
+  display: grid;
+  align-content: end;
+  color: var(--cream);
+}
+
+.admin-link h3 {
+  margin: 0 0 0.35rem;
+  font-family: 'Playfair Display', Georgia, serif;
+}
+
+.toolbar {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+
+.toolbar input,
+.toolbar select {
+  max-width: 260px;
+}
+
+.table-shell {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 760px;
+}
+
+th,
+td {
+  padding: 0.85rem;
+  border-bottom: 1px solid var(--line);
+  text-align: left;
+  vertical-align: top;
+}
+
+th {
+  color: var(--gold-soft);
+  font-size: 0.8rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+td {
+  color: var(--cream);
+}
+
+.items-cell {
+  color: var(--muted);
+  max-width: 320px;
+}
+
+.online-dot {
+  width: 0.65rem;
+  height: 0.65rem;
+  border-radius: 50%;
+  display: inline-block;
+  background: var(--success);
+  margin-right: 0.4rem;
+}
+
+@media (max-width: 760px) {
+  .toolbar {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .toolbar input,
+  .toolbar select {
+    max-width: none;
+  }
+}

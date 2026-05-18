@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Vinyard POS | Orders</title>
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/admin.css">
+  </head>
+  <body data-page="admin-orders">
+    <header class="topbar">
+      <h1 class="brand">Vinyard POS</h1>
+      <nav class="nav-actions">
+        <a class="button secondary" href="/admin/dashboard.html">Dashboard</a>
+        <a class="button secondary" href="/admin/accounts.html">Accounts</a>
+        <a class="button secondary" href="/admin/online-users.html">Online</a>
+        <button class="ghost" data-logout>Logout</button>
+      </nav>
+    </header>
+
+    <main class="layout">
+      <div class="toolbar">
+        <div>
+          <span class="eyebrow">POS queue</span>
+          <h2 class="section-title">Orders</h2>
+        </div>
+        <select data-status-filter>
+          <option value="all">All statuses</option>
+          <option value="pending">Pending</option>
+          <option value="confirmed">Confirmed</option>
+          <option value="preparing">Preparing</option>
+          <option value="ready">Ready</option>
+          <option value="delivered">Delivered</option>
+          <option value="cancelled">Cancelled</option>
+        </select>
+      </div>
+      <section class="table-shell">
+        <table>
+          <thead>
+            <tr>
+              <th>Order</th>
+              <th>Customer</th>
+              <th>Items</th>
+              <th>Total</th>
+              <th>Time</th>
+              <th>Status</th>
+              <th>Update</th>
+            </tr>
+          </thead>
+          <tbody data-orders-table></tbody>
+        </table>
+      </section>
+    </main>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/js/auth.js"></script>
+    <script src="/js/socket.js"></script>
+    <script src="/js/admin.js"></script>
+  </body>
+</html>
