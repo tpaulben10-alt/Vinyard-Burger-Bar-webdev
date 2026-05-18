@@ -4,6 +4,15 @@
   gap: 1.5rem;
   align-items: end;
   margin-bottom: 2rem;
+  padding: clamp(1rem, 3vw, 2rem);
+  min-height: 310px;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  background:
+    linear-gradient(90deg, rgba(18, 16, 11, 0.88), rgba(18, 16, 11, 0.45)),
+    url('/images/brand/storefront-night.jpg');
+  background-size: cover;
+  background-position: center;
 }
 
 .menu-hero h1 {
@@ -22,7 +31,7 @@
 }
 
 .tab {
-  background: var(--panel);
+  background: var(--green-deep);
   color: var(--cream);
   border: 1px solid var(--line);
   white-space: nowrap;
@@ -41,6 +50,7 @@
   width: 100%;
   aspect-ratio: 4 / 3;
   object-fit: cover;
+  object-position: top;
 }
 
 .menu-card h3 {
@@ -88,7 +98,11 @@
   z-index: 40;
   transform: translateX(105%);
   transition: transform 180ms ease;
-  background: var(--charcoal-2);
+  background:
+    linear-gradient(rgba(31, 23, 16, 0.97), rgba(31, 23, 16, 0.97)),
+    url('/images/brand/interior-wall.jpg');
+  background-size: cover;
+  background-position: center;
   border-left: 1px solid var(--line);
   display: grid;
   grid-template-rows: auto 1fr auto;

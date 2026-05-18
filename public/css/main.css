@@ -1,14 +1,19 @@
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Playfair+Display:wght@700;800&display=swap');
 
 :root {
-  --charcoal: #1a1208;
-  --charcoal-2: #24180c;
-  --panel: #2d2115;
-  --panel-soft: #3a2a19;
-  --gold: #e8a020;
-  --gold-soft: #ffd27a;
-  --cream: #f5ead8;
-  --muted: #cdbb9f;
+  --charcoal: #12100b;
+  --charcoal-2: #1f1710;
+  --panel: #2b2118;
+  --panel-soft: #3b2b1d;
+  --green: #064a36;
+  --green-deep: #032f24;
+  --orange: #f18b3f;
+  --gold: #e5a638;
+  --gold-soft: #ffc66d;
+  --cream: #fff4df;
+  --wall: #efe3cb;
+  --wood: #7b431f;
+  --muted: #d8c6a9;
   --line: rgba(245, 234, 216, 0.15);
   --danger: #e05f4f;
   --success: #6fca7b;
@@ -25,8 +30,11 @@ body {
   margin: 0;
   min-height: 100vh;
   background:
-    radial-gradient(circle at 18% 0%, rgba(232, 160, 32, 0.18), transparent 28rem),
-    linear-gradient(135deg, #120d07, var(--charcoal) 46%, #0e0a06);
+    linear-gradient(rgba(18, 16, 11, 0.9), rgba(18, 16, 11, 0.96)),
+    url('/images/brand/interior-wall.jpg');
+  background-size: cover;
+  background-attachment: fixed;
+  background-position: center;
   color: var(--cream);
   font-family: 'DM Sans', Arial, sans-serif;
 }
@@ -47,13 +55,44 @@ img {
 
 .brand {
   font-family: 'Playfair Display', Georgia, serif;
-  font-size: clamp(1.8rem, 3vw, 3rem);
+  font-size: clamp(1.45rem, 2.5vw, 2.45rem);
   line-height: 1;
   margin: 0;
 }
 
-.eyebrow {
+.brand-lockup {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.8rem;
+  color: var(--cream);
+}
+
+.brand-logo {
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: var(--cream);
+  border: 2px solid rgba(255, 244, 223, 0.9);
+  box-shadow: 0 0 0 4px rgba(6, 74, 54, 0.72);
+}
+
+.brand-logo.large {
+  width: 96px;
+  height: 96px;
+  margin-bottom: 1rem;
+}
+
+.brand-tagline {
+  display: block;
   color: var(--gold-soft);
+  font-size: 0.82rem;
+  font-weight: 700;
+  margin-top: 0.25rem;
+}
+
+.eyebrow {
+  color: var(--orange);
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -65,8 +104,8 @@ img {
   display: grid;
   grid-template-columns: minmax(0, 1.15fr) minmax(320px, 0.85fr);
   background-image:
-    linear-gradient(90deg, rgba(18, 13, 7, 0.3), rgba(18, 13, 7, 0.92)),
-    url('https://images.unsplash.com/photo-1550317138-10000687a72b?auto=format&fit=crop&w=1800&q=85');
+    linear-gradient(90deg, rgba(5, 32, 25, 0.32), rgba(18, 13, 7, 0.96)),
+    url('/images/brand/storefront-wide.jpg');
   background-size: cover;
   background-position: center;
 }
@@ -82,6 +121,7 @@ img {
   font-family: 'Playfair Display', Georgia, serif;
   font-size: clamp(3.5rem, 9vw, 7rem);
   line-height: 0.9;
+  text-shadow: 0 10px 40px rgba(0, 0, 0, 0.72);
 }
 
 .hero-copy p {
@@ -94,7 +134,11 @@ img {
   align-self: center;
   margin: 2rem;
   padding: 2rem;
-  background: rgba(36, 24, 12, 0.86);
+  background:
+    linear-gradient(rgba(31, 23, 16, 0.94), rgba(31, 23, 16, 0.94)),
+    url('/images/brand/counter-table.jpg');
+  background-size: cover;
+  background-position: center;
   border: 1px solid var(--line);
   border-radius: 8px;
   backdrop-filter: blur(12px);
@@ -143,8 +187,8 @@ button,
   border-radius: 6px;
   min-height: 44px;
   padding: 0.8rem 1rem;
-  background: var(--gold);
-  color: #160f08;
+  background: var(--orange);
+  color: #170d07;
   font: inherit;
   font-weight: 800;
   cursor: pointer;
@@ -156,7 +200,7 @@ button,
 
 button.secondary,
 .button.secondary {
-  background: var(--panel-soft);
+  background: var(--green);
   color: var(--cream);
   border: 1px solid var(--line);
 }
@@ -187,7 +231,8 @@ button:disabled {
   justify-content: space-between;
   gap: 1rem;
   padding: 1rem clamp(1rem, 4vw, 3rem);
-  background: rgba(18, 13, 7, 0.9);
+  background:
+    linear-gradient(90deg, rgba(3, 47, 36, 0.96), rgba(31, 23, 16, 0.94));
   border-bottom: 1px solid var(--line);
   backdrop-filter: blur(14px);
 }
@@ -213,7 +258,11 @@ button:disabled {
 .card,
 .table-shell,
 .modal {
-  background: rgba(45, 33, 21, 0.88);
+  background:
+    linear-gradient(rgba(43, 33, 24, 0.92), rgba(43, 33, 24, 0.92)),
+    url('/images/brand/counter-table.jpg');
+  background-size: cover;
+  background-position: center;
   border: 1px solid var(--line);
   border-radius: 8px;
 }
@@ -254,7 +303,7 @@ button:disabled {
 }
 
 .toast-item {
-  background: var(--gold);
+  background: var(--orange);
   color: #160f08;
   border-radius: 8px;
   padding: 0.85rem 1rem;
@@ -285,5 +334,10 @@ button:disabled {
   .topbar {
     align-items: flex-start;
     flex-direction: column;
+  }
+
+  .brand-logo {
+    width: 48px;
+    height: 48px;
   }
 }

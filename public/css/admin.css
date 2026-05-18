@@ -5,6 +5,7 @@
 
 .summary-card {
   padding: 1.25rem;
+  border-top: 4px solid var(--orange);
 }
 
 .summary-card strong {
@@ -20,6 +21,7 @@
   display: grid;
   align-content: end;
   color: var(--cream);
+  border-top: 4px solid var(--green);
 }
 
 .admin-link h3 {
