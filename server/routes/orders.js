@@ -39,26 +39,47 @@ router.post('/', authMiddleware, async (req, res, next) => {
       return res.status(400).json({ message: 'At least one item is required.' });
     }
 
-    const ids = items.map((item) => Number(item.menu_item_id));
-    const quantities = new Map(items.map((item) => [Number(item.menu_item_id), Number(item.quantity)]));
+    const ids = [...new Set(items.map((item) => Number(item.menu_item_id)))];
+    const quantities = new Map();
+    items.forEach((item) => {
+      const id = Number(item.menu_item_id);
+      quantities.set(id, (quantities.get(id) || 0) + Number(item.quantity));
+    });
 
     if (ids.some((id) => !Number.isInteger(id)) || [...quantities.values()].some((qty) => !Number.isInteger(qty) || qty < 1)) {
       return res.status(400).json({ message: 'Invalid cart item or quantity.' });
     }
 
+    await connection.beginTransaction();
+
     const placeholders = ids.map(() => '?').join(',');
     const [menuItems] = await connection.execute(
-      `SELECT id, price FROM menu_items WHERE is_available = TRUE AND id IN (${placeholders})`,
+      `SELECT id, name, price, stock
+         FROM menu_items
+        WHERE is_available = TRUE AND id IN (${placeholders})
+        FOR UPDATE`,
       ids
     );
 
     if (menuItems.length !== ids.length) {
+      await connection.rollback();
       return res.status(400).json({ message: 'One or more menu items are unavailable.' });
+    }
+
+    const insufficient = menuItems.find((item) => item.stock < quantities.get(item.id));
+    if (insufficient) {
+      await connection.rollback();
+      const requested = quantities.get(insufficient.id);
+      const available = insufficient.stock;
+      return res.status(409).json({
+        message: available === 0
+          ? `${insufficient.name} is sold out.`
+          : `${insufficient.name} only has ${available} left, but ${requested} were requested.`
+      });
     }
 
     const total = menuItems.reduce((sum, item) => sum + Number(item.price) * quantities.get(item.id), 0);
 
-    await connection.beginTransaction();
     const [orderResult] = await connection.execute(
       'INSERT INTO orders (user_id, total_amount, notes) VALUES (?, ?, ?)',
       [req.user.id, total.toFixed(2), notes || null]
@@ -68,6 +89,11 @@ router.post('/', authMiddleware, async (req, res, next) => {
       await connection.execute(
         'INSERT INTO order_items (order_id, menu_item_id, quantity, unit_price) VALUES (?, ?, ?, ?)',
         [orderResult.insertId, item.id, quantities.get(item.id), item.price]
+      );
+
+      await connection.execute(
+        'UPDATE menu_items SET stock = stock - ? WHERE id = ?',
+        [quantities.get(item.id), item.id]
       );
     }
 

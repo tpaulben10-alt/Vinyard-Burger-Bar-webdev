@@ -92,3 +92,5 @@ INSERT INTO menu_items (name, description, price, category, image_url) VALUES
 ('Sprite', 'Cold bottled or canned soft drink.', 35.00, 'beverages', '/images/menu/coffee-menu.jpg'),
 ('Lemon Iced Tea', 'Cold lemon iced tea.', 35.00, 'beverages', '/images/menu/coffee-menu.jpg'),
 ('Mineral Water', 'Bottled mineral water.', 25.00, 'beverages', '/images/menu/coffee-menu.jpg');
+
+UPDATE menu_items SET stock = 20 WHERE stock = 0;

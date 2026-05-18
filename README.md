@@ -26,6 +26,12 @@ Full-stack online ordering and POS system for a burger restaurant.
    mysql --host=$DB_HOST --port=$DB_PORT --user=$DB_USER --password=$DB_PASSWORD $DB_NAME < server/schema.sql
    ```
 
+   For an existing database, add stock support with:
+
+   ```bash
+   mysql --host=$DB_HOST --port=$DB_PORT --user=$DB_USER --password=$DB_PASSWORD $DB_NAME < server/migrations/001_add_stock_to_menu_items.sql
+   ```
+
 4. Seed menu items:
 
    ```bash
@@ -49,3 +55,7 @@ UPDATE users SET role = 'admin' WHERE email = 'admin@vinyard.com';
 ```
 
 Or insert an admin directly with a bcrypt-hashed password.
+
+## Stock Management
+
+Admin users can manage inventory at `/admin/menu.html`. Customer menu cards show available stock, disable sold-out items, and orders decrement stock inside the same database transaction that creates the order.

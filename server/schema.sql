@@ -16,6 +16,7 @@ CREATE TABLE IF NOT EXISTS menu_items (
   price DECIMAL(10, 2) NOT NULL,
   category VARCHAR(50),
   image_url VARCHAR(255),
+  stock INT DEFAULT 0,
   is_available BOOLEAN DEFAULT TRUE
 );
 

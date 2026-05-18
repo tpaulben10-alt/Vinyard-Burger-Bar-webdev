@@ -77,6 +77,29 @@ td {
   max-width: 320px;
 }
 
+.low-stock {
+  color: var(--gold-soft);
+  font-weight: 900;
+}
+
+.stock-controls {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.stock-controls button {
+  min-height: 34px;
+  width: 34px;
+  padding: 0;
+}
+
+.row-actions {
+  display: flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+
 .online-dot {
   width: 0.65rem;
   height: 0.65rem;

@@ -79,6 +79,22 @@
   font-size: 1.1rem;
 }
 
+.stock-row {
+  min-height: 1.75rem;
+  margin-bottom: 0.75rem;
+  color: var(--muted);
+  font-weight: 800;
+}
+
+.sold-out {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  padding: 0.25rem 0.6rem;
+  background: var(--danger);
+  color: var(--cream);
+}
+
 .cart-badge {
   min-width: 1.5rem;
   min-height: 1.5rem;
@@ -149,25 +165,6 @@
   height: 34px;
   min-height: 34px;
   padding: 0;
-}
-
-.modal-backdrop {
-  position: fixed;
-  inset: 0;
-  z-index: 45;
-  display: none;
-  place-items: center;
-  padding: 1rem;
-  background: rgba(0, 0, 0, 0.55);
-}
-
-.modal-backdrop.open {
-  display: grid;
-}
-
-.modal {
-  width: min(460px, 100%);
-  padding: 1.5rem;
 }
 
 .orders-list {

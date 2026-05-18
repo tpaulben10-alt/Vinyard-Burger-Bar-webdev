@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Vinyard POS | Menu Stock</title>
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/admin.css">
+  </head>
+  <body data-page="admin-menu">
+    <header class="topbar">
+      <a class="brand-lockup" href="/admin/dashboard.html">
+        <img class="brand-logo" src="/images/brand/logo.jpg" alt="Vinyard Burger Bar logo">
+        <span><span class="brand">Vinyard POS</span><span class="brand-tagline">Burger Bar</span></span>
+      </a>
+      <nav class="nav-actions">
+        <a class="button secondary" href="/admin/dashboard.html">Dashboard</a>
+        <a class="button secondary" href="/admin/orders.html">Orders</a>
+        <a class="button secondary" href="/admin/accounts.html">Accounts</a>
+        <button class="ghost" data-logout>Logout</button>
+      </nav>
+    </header>
+
+    <main class="layout">
+      <div class="toolbar">
+        <div>
+          <span class="eyebrow">Inventory control</span>
+          <h2 class="section-title">Menu Stock</h2>
+        </div>
+        <button data-menu-add>Add New Item</button>
+      </div>
+
+      <section class="table-shell">
+        <table>
+          <thead>
+            <tr>
+              <th>Item</th>
+              <th>Category</th>
+              <th>Price</th>
+              <th>Stock</th>
+              <th>Adjust</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody data-menu-table></tbody>
+        </table>
+      </section>
+    </main>
+
+    <div class="modal-backdrop" data-menu-modal>
+      <div class="modal">
+        <h2 class="section-title" data-menu-modal-title>Add Item</h2>
+        <form class="form" data-menu-form>
+          <input type="hidden" name="id">
+          <label>Name
+            <input name="name" required>
+          </label>
+          <label>Category
+            <input name="category" placeholder="burger, pasta, coffee..." required>
+          </label>
+          <label>Price
+            <input name="price" type="number" min="0" step="0.01" required>
+          </label>
+          <label>Stock
+            <input name="stock" type="number" min="0" step="1" required>
+          </label>
+          <label>Image URL
+            <input name="image_url" placeholder="/images/menu/burger-menu.jpg">
+          </label>
+          <label>Description
+            <textarea name="description"></textarea>
+          </label>
+          <div class="nav-actions">
+            <button type="submit">Save</button>
+            <button type="button" class="secondary" data-menu-cancel>Cancel</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/js/auth.js"></script>
+    <script src="/js/socket.js"></script>
+    <script src="/js/admin.js"></script>
+  </body>
+</html>

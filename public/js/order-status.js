@@ -2,7 +2,7 @@ const statusSteps = ['pending', 'confirmed', 'preparing', 'ready', 'delivered'];
 
 function formatMoney(value) {
   const amount = Number(value);
-  return `₱${amount.toLocaleString('en-PH', { minimumFractionDigits: Number.isInteger(amount) ? 0 : 2, maximumFractionDigits: 2 })}`;
+  return `\u20b1${amount.toLocaleString('en-PH', { minimumFractionDigits: Number.isInteger(amount) ? 0 : 2, maximumFractionDigits: 2 })}`;
 }
 
 function formatDate(value) {

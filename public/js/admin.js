@@ -1,6 +1,6 @@
 function money(value) {
   const amount = Number(value);
-  return `₱${amount.toLocaleString('en-PH', { minimumFractionDigits: Number.isInteger(amount) ? 0 : 2, maximumFractionDigits: 2 })}`;
+  return `\u20b1${amount.toLocaleString('en-PH', { minimumFractionDigits: Number.isInteger(amount) ? 0 : 2, maximumFractionDigits: 2 })}`;
 }
 
 function dateTime(value) {
@@ -147,10 +147,128 @@ async function initOnlineUsers() {
   ready.socket?.on('admin:online_users', render);
 }
 
+async function initMenuManager() {
+  const ready = await initAdminShell();
+  if (!ready) return;
+
+  let items = [];
+  const host = document.querySelector('[data-menu-table]');
+  const modal = document.querySelector('[data-menu-modal]');
+  const form = document.querySelector('[data-menu-form]');
+  const title = document.querySelector('[data-menu-modal-title]');
+
+  function openModal(item) {
+    title.textContent = item ? 'Edit Item' : 'Add Item';
+    form.reset();
+    form.id.value = item?.id || '';
+    form.name.value = item?.name || '';
+    form.category.value = item?.category || '';
+    form.price.value = item?.price || '';
+    form.stock.value = item?.stock ?? 0;
+    form.image_url.value = item?.image_url || '';
+    form.description.value = item?.description || '';
+    modal.classList.add('open');
+  }
+
+  function closeModal() {
+    modal.classList.remove('open');
+  }
+
+  function render() {
+    host.innerHTML = items.map((item) => `
+      <tr>
+        <td>
+          <strong>${item.name}</strong>
+          <br><small>${item.description || ''}</small>
+        </td>
+        <td>${item.category}</td>
+        <td>${money(item.price)}</td>
+        <td class="${item.stock < 5 ? 'low-stock' : ''}">
+          ${item.stock < 5 ? '⚠️ ' : ''}${item.stock}
+        </td>
+        <td>
+          <span class="stock-controls">
+            <button class="secondary" data-stock-minus="${item.id}">-</button>
+            <button class="secondary" data-stock-plus="${item.id}">+</button>
+          </span>
+        </td>
+        <td>
+          <span class="row-actions">
+            <button class="secondary" data-edit-item="${item.id}">Edit</button>
+            <button class="ghost" data-delete-item="${item.id}">Delete</button>
+          </span>
+        </td>
+      </tr>
+    `).join('') || '<tr><td colspan="6">No menu items found.</td></tr>';
+
+    host.querySelectorAll('[data-stock-minus]').forEach((button) => {
+      button.addEventListener('click', () => adjustStock(Number(button.dataset.stockMinus), -1));
+    });
+    host.querySelectorAll('[data-stock-plus]').forEach((button) => {
+      button.addEventListener('click', () => adjustStock(Number(button.dataset.stockPlus), 1));
+    });
+    host.querySelectorAll('[data-edit-item]').forEach((button) => {
+      button.addEventListener('click', () => openModal(items.find((item) => item.id === Number(button.dataset.editItem))));
+    });
+    host.querySelectorAll('[data-delete-item]').forEach((button) => {
+      button.addEventListener('click', () => deleteItem(Number(button.dataset.deleteItem)));
+    });
+  }
+
+  async function loadItems() {
+    const data = await API.request('/api/menu');
+    items = data.items;
+    render();
+  }
+
+  async function adjustStock(id, delta) {
+    await API.request(`/api/menu/${id}/stock`, {
+      method: 'PATCH',
+      body: JSON.stringify({ delta })
+    });
+    await loadItems();
+  }
+
+  async function deleteItem(id) {
+    if (!window.confirm('Delete this menu item from the active menu?')) return;
+
+    await API.request(`/api/menu/${id}`, { method: 'DELETE' });
+    await loadItems();
+  }
+
+  form.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    const body = Object.fromEntries(new FormData(form));
+    body.price = Number(body.price);
+    body.stock = Number(body.stock);
+
+    if (body.id) {
+      await API.request(`/api/menu/${body.id}`, {
+        method: 'PUT',
+        body: JSON.stringify(body)
+      });
+    } else {
+      delete body.id;
+      await API.request('/api/menu', {
+        method: 'POST',
+        body: JSON.stringify(body)
+      });
+    }
+
+    closeModal();
+    await loadItems();
+  });
+
+  document.querySelector('[data-menu-add]').addEventListener('click', () => openModal(null));
+  document.querySelector('[data-menu-cancel]').addEventListener('click', closeModal);
+  await loadItems();
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   const page = document.body.dataset.page;
   if (page === 'admin-dashboard') initDashboard();
   if (page === 'admin-orders') initOrders();
   if (page === 'admin-accounts') initAccounts();
   if (page === 'admin-online') initOnlineUsers();
+  if (page === 'admin-menu') initMenuManager();
 });

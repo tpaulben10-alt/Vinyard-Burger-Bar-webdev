@@ -19,7 +19,7 @@ let cart = JSON.parse(localStorage.getItem('cart') || '[]');
 
 function formatMoney(value) {
   const amount = Number(value);
-  return `₱${amount.toLocaleString('en-PH', { minimumFractionDigits: Number.isInteger(amount) ? 0 : 2, maximumFractionDigits: 2 })}`;
+  return `\u20b1${amount.toLocaleString('en-PH', { minimumFractionDigits: Number.isInteger(amount) ? 0 : 2, maximumFractionDigits: 2 })}`;
 }
 
 function saveCart() {
@@ -63,9 +63,12 @@ function renderMenu() {
       <div class="card-body">
         <h3>${item.name}</h3>
         <p>${item.description || ''}</p>
+        <div class="stock-row">
+          ${item.stock > 0 ? `<span>Stock: ${item.stock}</span>` : '<span class="sold-out">Sold Out</span>'}
+        </div>
         <div class="price-row">
           <span class="price">${formatMoney(item.price)}</span>
-          <button data-add="${item.id}">Add</button>
+          <button data-add="${item.id}" ${item.stock <= 0 ? 'disabled' : ''}>Add</button>
         </div>
       </div>
     </article>
@@ -78,9 +81,18 @@ function renderMenu() {
 
 function addToCart(id) {
   const item = menuItems.find((entry) => entry.id === id);
+  if (!item || item.stock <= 0) {
+    showToast('That item is sold out.');
+    return;
+  }
+
   const existing = cart.find((entry) => entry.menu_item_id === id);
 
   if (existing) {
+    if (existing.quantity >= item.stock) {
+      showToast(`Only ${item.stock} ${item.name} left in stock.`);
+      return;
+    }
     existing.quantity += 1;
   } else {
     cart.push({ menu_item_id: id, quantity: 1, name: item.name, price: Number(item.price) });
@@ -92,8 +104,10 @@ function addToCart(id) {
 }
 
 function updateQuantity(id, delta) {
+  const stock = menuItems.find((entry) => entry.id === id)?.stock || 0;
+
   cart = cart.map((item) => (
-    item.menu_item_id === id ? { ...item, quantity: item.quantity + delta } : item
+    item.menu_item_id === id ? { ...item, quantity: Math.min(item.quantity + delta, stock) } : item
   )).filter((item) => item.quantity > 0);
 
   saveCart();
@@ -147,9 +161,19 @@ async function placeOrder() {
     document.querySelector('[data-cart-drawer]').classList.remove('open');
     document.querySelector('[data-modal-order]').textContent = `Order #${order.id}`;
     document.querySelector('[data-confirm-modal]').classList.add('open');
+    await loadMenu();
   } catch (error) {
     showToast(error.message);
+    await loadMenu();
   }
+}
+
+async function loadMenu() {
+  const { items } = await API.request('/api/menu');
+  menuItems = items;
+  renderTabs();
+  renderMenu();
+  renderCart();
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -172,8 +196,5 @@ document.addEventListener('DOMContentLoaded', async () => {
     document.querySelector('[data-confirm-modal]').classList.remove('open');
   });
 
-  const { items } = await API.request('/api/menu');
-  menuItems = items;
-  renderTabs();
-  renderMenu();
+  await loadMenu();
 });
