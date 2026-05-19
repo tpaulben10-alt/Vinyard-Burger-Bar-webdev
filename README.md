@@ -20,22 +20,16 @@ Full-stack online ordering and POS system for a burger restaurant.
 
 2. Update `.env` with your Aiven MySQL credentials and a strong `JWT_SECRET`.
 
-3. Create tables:
+3. Create or update tables:
 
    ```bash
-   mysql --host=$DB_HOST --port=$DB_PORT --user=$DB_USER --password=$DB_PASSWORD $DB_NAME < server/schema.sql
-   ```
-
-   For an existing database, add stock support with:
-
-   ```bash
-   mysql --host=$DB_HOST --port=$DB_PORT --user=$DB_USER --password=$DB_PASSWORD $DB_NAME < server/migrations/001_add_stock_to_menu_items.sql
+   npm run db:migrate
    ```
 
 4. Seed menu items:
 
    ```bash
-   mysql --host=$DB_HOST --port=$DB_PORT --user=$DB_USER --password=$DB_PASSWORD $DB_NAME < server/seed.sql
+   npm run db:seed
    ```
 
 5. Start the app:
@@ -45,6 +39,36 @@ Full-stack online ordering and POS system for a burger restaurant.
    ```
 
 Open `http://localhost:3000`.
+
+## Aiven MySQL
+
+Set these variables locally and on Render:
+
+- `DB_HOST`
+- `DB_PORT`
+- `DB_USER`
+- `DB_PASSWORD`
+- `DB_NAME`
+- `DB_SSL=true`
+- `JWT_SECRET`
+
+For SSL, use one of these:
+
+- `DB_CA_CERT_BASE64`: recommended for Render. Paste the base64-encoded Aiven CA certificate.
+- `DB_CA_CERT`: paste the PEM certificate text, with newlines escaped as `\n`.
+- `DB_CA_PATH`: local file path to a CA certificate.
+
+If you leave all CA variables blank, the app still requests SSL with certificate verification enabled.
+
+## Render Deploy
+
+The included `render.yaml` is ready for a Render Web Service:
+
+- Build command: `npm install`
+- Pre-deploy command: `npm run db:migrate`
+- Start command: `node server/index.js`
+
+After creating the Render service, set all Aiven environment variables in the Render dashboard. Run `npm run db:seed` locally or from a Render shell once if you need to load the initial menu.
 
 ## Admin Account
 

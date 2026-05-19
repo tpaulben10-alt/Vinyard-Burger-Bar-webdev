@@ -3,6 +3,7 @@ services:
     name: vinyard-burger-bar
     env: node
     buildCommand: npm install
+    preDeployCommand: npm run db:migrate
     startCommand: node server/index.js
     envVars:
       - key: PORT
@@ -22,6 +23,10 @@ services:
       - key: DB_SSL
         value: true
       - key: DB_CA_PATH
+        sync: false
+      - key: DB_CA_CERT
+        sync: false
+      - key: DB_CA_CERT_BASE64
         sync: false
       - key: JWT_SECRET
         sync: false
