@@ -4,7 +4,7 @@ const authMiddleware = require('../middleware/authMiddleware');
 const requireAdmin = require('../middleware/roleMiddleware');
 
 const router = express.Router();
-const categoryOrder = '"burger", "pasta", "fries", "appetizer", "wedges", "rice_meal", "fried_chicken", "coffee", "frappe", "milk_shake", "beverages", "add_ons"';
+const categoryOrder = "'burger', 'pasta', 'fries', 'appetizer', 'wedges', 'rice_meal', 'fried_chicken', 'coffee', 'frappe', 'milk_shake', 'beverages', 'add_ons'";
 
 router.get('/', async (req, res, next) => {
   try {

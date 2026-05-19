@@ -35,7 +35,7 @@ async function getFullOrder(orderId) {
 router.get('/summary', async (req, res, next) => {
   try {
     const [[today]] = await pool.execute('SELECT COUNT(*) AS total FROM orders WHERE DATE(created_at) = CURDATE()');
-    const [[pending]] = await pool.execute('SELECT COUNT(*) AS total FROM orders WHERE status = "pending"');
+    const [[pending]] = await pool.execute("SELECT COUNT(*) AS total FROM orders WHERE status = 'pending'");
     const [[online]] = await pool.execute('SELECT COUNT(*) AS total FROM users WHERE is_online = TRUE');
     const [[users]] = await pool.execute('SELECT COUNT(*) AS total FROM users');
 

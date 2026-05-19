@@ -5,6 +5,14 @@ const cors = require('cors');
 const { Server } = require('socket.io');
 require('dotenv').config();
 
+// Keep the server alive if a stale DB connection throws asynchronously
+process.on('uncaughtException', (err) => {
+  console.error('[uncaughtException]', err.message);
+});
+process.on('unhandledRejection', (reason) => {
+  console.error('[unhandledRejection]', reason);
+});
+
 const authRoutes = require('./routes/auth');
 const menuRoutes = require('./routes/menu');
 const orderRoutes = require('./routes/orders');

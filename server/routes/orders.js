@@ -104,10 +104,10 @@ router.post('/', authMiddleware, async (req, res, next) => {
 
     return res.status(201).json({ message: 'Order placed.', order });
   } catch (error) {
-    await connection.rollback();
+    try { await connection.rollback(); } catch (_) {}
     return next(error);
   } finally {
-    connection.release();
+    try { connection.release(); } catch (_) {}
   }
 });
 
